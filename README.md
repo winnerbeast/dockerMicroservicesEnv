@@ -75,9 +75,9 @@ Creating php ...
 Creating nginx ...
 ```
 
-访问 IP，效果图如下（可能需要等几秒钟）：  
+访问 IP，效果图如下：  
     
-<div align=center><img src="https://raw.githubusercontent.com/duiying/img/master/docker-lnmp.png" width="600"></div>  
+![](./docs/images/nezha-test.png)
 
 ### 学习文档
 
