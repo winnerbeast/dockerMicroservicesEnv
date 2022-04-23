@@ -1,0 +1,79 @@
+version: "1.0"
+
+services:
+
+  redis1:
+    container_name: redis1
+    image: redis:5.0.8
+    #第一个镜像，使用的不是 alpine 的，为了后面能执行脚本用的
+    networks:
+      - cluster
+    volumes:
+      - ./r1/redis.conf:/usr/local/etc/redis/redis.conf
+      - ./r1/logs:/usr/local/redis/logs
+      - ./r1/data:/data
+    command: [ "redis-server", "/usr/local/etc/redis/redis.conf" ]
+    restart: always
+
+  redis2:
+    container_name: redis2
+    image: redis:5.0.8-alpine
+    networks:
+      - cluster
+    volumes:
+      - ./r2/redis.conf:/usr/local/etc/redis/redis.conf
+      - ./r2/logs:/usr/local/redis/logs
+      - ./r2/data:/data
+    command: [ "redis-server", "/usr/local/etc/redis/redis.conf" ]
+    restart: always
+
+  redis3:
+    container_name: redis3
+    image: redis:5.0.8-alpine
+    networks:
+      - cluster
+    volumes:
+      - ./r3/redis.conf:/usr/local/etc/redis/redis.conf
+      - ./r3/logs:/usr/local/redis/logs
+      - ./r3/data:/data
+    command: [ "redis-server", "/usr/local/etc/redis/redis.conf" ]
+    restart: always
+
+  redis4:
+    container_name: redis4
+    image: redis:5.0.8-alpine
+    networks:
+      - cluster
+    volumes:
+      - ./r4/redis.conf:/usr/local/etc/redis/redis.conf
+      - ./r4/logs:/usr/local/redis/logs
+      - ./r4/data:/data
+    command: [ "redis-server", "/usr/local/etc/redis/redis.conf" ]
+    restart: always
+
+  redis5:
+    container_name: redis5
+    image: redis:5.0.8-alpine
+    networks:
+      - cluster
+    volumes:
+      - ./r5/redis.conf:/usr/local/etc/redis/redis.conf
+      - ./r5/logs:/usr/local/redis/logs
+      - ./r5/data:/data
+    command: [ "redis-server", "/usr/local/etc/redis/redis.conf" ]
+    restart: always
+
+  redis6:
+    container_name: redis6
+    image: redis:5.0.8-alpine
+    networks:
+      - cluster
+    volumes:
+      - ./r6/redis.conf:/usr/local/etc/redis/redis.conf
+      - ./r6/logs:/usr/local/redis/logs
+      - ./r6/data:/data
+    command: [ "redis-server", "/usr/local/etc/redis/redis.conf" ]
+    restart: always
+
+networks:
+  cluster:

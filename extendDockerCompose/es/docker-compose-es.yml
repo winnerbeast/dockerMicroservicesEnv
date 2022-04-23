@@ -1,0 +1,106 @@
+version: '2.1'
+services:
+  es_1:
+    # 镜像名称
+    image: elasticsearch:7.6.1
+    # 容器名称
+    container_name: nezha_user_es-1
+    environment:
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - TZ=Asia/Shanghai
+    # 文件映射到主机
+    volumes:
+      - ./config/es1.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+    # 赋予权限
+    privileged: true
+    restart: always
+    #端口映射
+    ports:
+      - 9200:9200
+      - 9300:9300
+    # 指定网段
+    networks:
+      es:
+        ipv4_address: 173.199.8.2   #设置ip地址
+
+  es_2:
+    # 镜像名称
+    image: elasticsearch:7.6.1
+    # 容器名称
+    container_name: nezha_user_es-2
+    environment:
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - TZ=Asia/Shanghai
+    # 文件映射到主机
+    volumes:
+      - ./config/es2.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+    # 赋予权限
+    privileged: true
+    restart: always
+    #端口映射
+    ports:
+      - 9201:9200
+      - 9301:9300
+    # 指定网段
+    networks:
+      es:
+        ipv4_address: 173.199.8.3   #设置ip地址
+  es_3:
+    # 镜像名称
+    image: elasticsearch:7.6.1
+    # 容器名称
+    container_name: nezha_user_es-3
+    environment:
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      -  TZ=Asia/Shanghai
+    # 文件映射到主机
+    volumes:
+      - ./config/es3.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+    # 赋予权限
+    privileged: true
+    restart: always
+    #端口映射
+    ports:
+      - 9202:9200
+      - 9302:9300
+    # 指定网段
+    networks:
+      es:
+        ipv4_address: 173.199.8.4   #设置ip地址
+
+  es-head:
+    image: tobias74/elasticsearch-head
+    ports:
+      - 9100:9100
+    environment:
+      - TZ=Asia/Shanghai
+    container_name: es-head
+    restart: always
+    networks:
+      es:
+        ipv4_address: 173.199.8.5   #设置ip地址
+  kibana:
+    image: kibana:7.6.1
+    container_name: kibana
+    restart: always
+    # 赋予权限
+    privileged: true
+    volumes:
+      - ./config/kibana.yml:/usr/share/kibana/config/kibana.yml
+    ports:
+      - 5601:5601
+    networks:
+      es:
+          ipv4_address: 173.199.8.6   #设置ip地址
+    depends_on:
+      - es_1
+    external_links:
+      - es_1
+
+networks:
+  es:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: "173.199.8.0/24"
+

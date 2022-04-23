@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<!DOCTYPE mycat:schema SYSTEM "schema.dtd">
+<mycat:schema xmlns:mycat="http://io.mycat/">
+    <!-- 配置2个逻辑库-->
+    <schema name="nz_user" checkSQLschema="true" sqlMaxLimit="100">
+        <table name="user01" primaryKey= "id" dataNode="dn_user_1,dn_user_2" rule="sharding-by-murmur" />   <!-- 一致性hash-->
+        <table name="user02" primaryKey= "id" dataNode="dn_user_1,dn_user_2" rule="sharding-by-murmur" />   <!-- 一致性hash-->
+    </schema>
+    <schema name="nz_order" checkSQLschema="true" sqlMaxLimit="100">
+        <table name="order01" dataNode="dn_order_1,dn_order_2" rule="auto-sharding-long" />  <!-- 范围求模分片-->
+        <table name="order02" dataNode="dn_order_1,dn_order_2" rule="auto-sharding-long" />  <!-- 范围求模分片-->
+    </schema>
+    <!-- 逻辑库对应的真实数据表-->
+
+
+    <!-- 逻辑库对应的真实数据库-->
+    <dataNode name="dn_order_1" dataHost="dh_order_1" database="order" />
+    <dataNode name="dn_order_2" dataHost="dh_order_2" database="order" />
+    <dataNode name="dn_user_1" dataHost="dh_user_1" database="user" />
+    <dataNode name="dn_user_2" dataHost="dh_user_2" database="user" />
+
+
+    <!-- 真实数据库地址：192.168.30.129:3306(order)-->
+    <dataHost name="dh_order_1" maxCon="1000" minCon="10" balance="1" writeType="0" dbType="mysql" dbDriver="native">
+        <heartbeat>select user()</heartbeat>
+        <writeHost host="hostM1" url="192.168.30.129:3306" user="root" password="root" >
+            <readHost host="hostS2" url="192.168.30.129:3306" user="root" password="root" />
+        </writeHost>
+        <writeHost host="hostS1" url="172.20.0.12:3306" user="root" password="root" />
+    </dataHost>
+
+    <dataHost name="dh_order_2" maxCon="1000" minCon="10" balance="1" writeType="0" dbType="mysql" dbDriver="native">
+        <heartbeat>select user()</heartbeat>
+        <writeHost host="hostM1" url="192.168.30.129:3307" user="root" password="root" >
+            <readHost host="hostS2" url="192.168.30.129:3307" user="root" password="root" />
+        </writeHost>
+        <writeHost host="hostS1" url="172.20.0.12:3306" user="root" password="root" />
+    </dataHost>
+
+    <!--192.168.30.130:3306(user)-->
+    <dataHost name="dh_user_1" maxCon="1000" minCon="10" balance="1" writeType="0" dbType="mysql" dbDriver="native">
+        <heartbeat>select user()</heartbeat>
+        <writeHost host="hostM1" url="192.168.30.130:3306" user="root" password="root" >
+            <readHost host="hostS2" url="192.168.30.130:3306" user="root" password="root" />
+        </writeHost>
+        <writeHost host="hostS1" url="172.20.0.12:3306" user="root" password="root" />
+    </dataHost>
+
+    <dataHost name="dh_user_2" maxCon="1000" minCon="10" balance="1" writeType="0" dbType="mysql" dbDriver="native">
+        <heartbeat>select user()</heartbeat>
+        <writeHost host="hostM1" url="192.168.30.130:3307" user="root" password="root" >
+            <readHost host="hostS2" url="192.168.30.130:3307" user="root" password="root" />
+        </writeHost>
+        <writeHost host="hostS1" url="172.20.0.12:3306" user="root" password="root" />
+    </dataHost>
+
+    <!--真实数据库所在的服务器地址，这里配置了1主2从。主服务器(hostM1)宕机会自动切换到(hostS1) -->
+    <!--
+    <dataHost name="dh_1" maxCon="1000" minCon="10" balance="1" writeType="0" dbType="mysql" dbDriver="native">
+        <heartbeat>select user()</heartbeat>
+        <writeHost host="hostM1" url="172.20.0.11:3306" user="root" password="alpha.abc" >
+            <readHost host="hostS2" url="172.20.0.13:3306" user="root" password="alpha.abc" />
+        </writeHost>
+        <writeHost host="hostS1" url="172.20.0.12:3306" user="root" password="alpha.abc" />
+    </dataHost>
+    -->
+
+</mycat:schema>

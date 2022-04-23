@@ -1,0 +1,82 @@
+version: '2.1'
+
+services:
+  consul_nezha_user_1_s:
+    image: consul:latest
+    container_name: consul_nezha_user_1_s
+    restart: always
+    network_mode: nezha_user_net
+    privileged: true
+    volumes:
+      - ./data/consul_nezha_user_1_s_s:/consul/data
+    command: agent -server -client=0.0.0.0 -bootstrap-expect=3 -node=consul_nezha_user_1_s -datacenter=nezha_user_1 -config-dir /consul/config -data-dir /consul/data
+  consul_nezha_user_2_s:
+    image: consul:latest
+    container_name: consul_nezha_user_2_s
+    network_mode: nezha_user_net
+    restart: always
+    privileged: true
+    volumes:
+      - ./data/consul_nezha_user_2_s:/consul/data
+    command: agent -server -client=0.0.0.0 -retry-join=consul_nezha_user_1_s -node=consul_nezha_user_2_s -datacenter=nezha_user_1 -config-dir /consul/config -data-dir /consul/data
+  consul_nezha_user_3_s:
+    image: consul:latest
+    container_name: consul_nezha_user_3_s
+    network_mode: nezha_user_net
+    restart: always
+    privileged: true
+    volumes:
+      - ./data/consul_nezha_user_3_s:/consul/data
+    command: agent -server -client=0.0.0.0 -retry-join=consul_nezha_user_1_s -node=consul_nezha_user_3_s -datacenter=nezha_user_1 -config-dir /consul/config -data-dir /consul/data
+  consul_nezha_user_1_c:
+    image: consul:latest
+    container_name: consul_nezha_user_1_c
+    network_mode: nezha_user_net
+    restart: always
+    privileged: true
+    volumes:
+      - ./config/consul_nezha_user_1_c:/consul/config
+    ports:
+      - 8500:8500
+    command: agent -client=0.0.0.0 -retry-join=consul_nezha_user_1_s -ui -node=consul_nezha_user_1_c -datacenter=nezha_user_1 -config-dir /consul/config
+
+  consul_nezha_user_5_s:
+    image: consul:latest
+    container_name: consul_nezha_user_5_s
+    network_mode: nezha_user_net
+    restart: always
+    privileged: true
+    volumes:
+      - ./data/consul_nezha_user_5_s:/consul/data
+    command: agent -server -client=0.0.0.0 -bootstrap-expect=3 -node=consul_nezha_user_5_s -datacenter=nezha_user_2 -config-dir /consul/config -data-dir /consul/data
+  consul_nezha_user_6_s:
+    image: consul:latest
+    container_name: consul_nezha_user_6_s
+    network_mode: nezha_user_net
+    restart: always
+    privileged: true
+    volumes:
+      - ./data/consul_nezha_user_6_s:/consul/data
+    command: agent -server -client=0.0.0.0 -retry-join=consul_nezha_user_5_s -node=consul_nezha_user_6_s -datacenter=nezha_user_2 -config-dir /consul/config -data-dir /consul/data
+  consul_nezha_user_7_s:
+    image: consul:latest
+    container_name: consul_nezha_user_7_s
+    network_mode: nezha_user_net
+    restart: always
+    privileged: true
+    volumes:
+      - ./data/consul_nezha_user_7_s:/consul/data
+    command: agent -server -client=0.0.0.0 -retry-join=consul_nezha_user_5_s -node=consul_nezha_user_7_s -datacenter=nezha_user_2 -config-dir /consul/config -data-dir /consul/data
+  consul_nezha_user_2_c:
+    image: consul:latest
+    container_name: consul_nezha_user_2_c
+    network_mode: nezha_user_net
+    restart: always
+    privileged: true
+    volumes:
+      - ./config/consul_nezha_user_2_c:/consul/config
+    ports:
+      - 8501:8500
+    command: agent -client=0.0.0.0 -retry-join=consul_nezha_user_5_s -ui -node=consul_nezha_user_2_c -datacenter=nezha_user_2 -config-dir /consul/config
+
+    

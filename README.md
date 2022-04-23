@@ -76,8 +76,10 @@ Creating nginx ...
 ```
 
 访问 IP，效果图如下：  
-    
-![](./docs/images/nezha-test.png)
+
+<center class="half">
+ <img src="https://github.com/winnerbeast/dockerMicroservicesEnv/blob/main/docs/images/nezha-test.png" />
+</center>  
 
 ### 学习文档
 
