@@ -1,32 +1,48 @@
-# Docker-LNMP
+# dockerMicroservicesEnv
 
-利用 Docker-Compose 编排 LNMP 开发环境  
+功能组成：
 
-### 环境组成
+1. 利用 Docker-Compose 编排 LNMP 开发环境  
+2. 微服务软件编排；如：RabbitMQ、Kafka、MongoDB、Zookeeper等等
+3. 软件架构操作与原理分析
+
+-  
+
+## 目录结构
+```
+dockerMicroservicesEnv
+  Docker-LNMP
+	|-docker                               	Docker 目录
+	|	|-config                           	配置文件目录
+	|	|	|-ini                          	php 配置文件目录
+	|	|		|-php.ini                  	php 配置文件
+	|	|	|-nginx                        	Nginx 配置文件目录
+	|	|	|-mysql
+	|	|		|-my.cnf					
+	|	|-docs                              扩展安装目录
+	|	|-docker-compose-fast.yml  
+	|-extendDockerCompose                	微服务软件docker-compose编排目录
+	|	|-consul
+	|	|-docs								各软件安装、使用说明文档
+	|	|-es
+	|	|-kafka
+	|	|-mongodb
+	|	|-mycat
+	|	|-rabbitmq
+	|	|-redis
+	|-README.md                          	说明文件
+```
+
+### Docker-LNMP环境组成
 
 - PHP 8.0
 - Nginx
 - MySQL 8.0
 - Redis
 - phpMyAdmin
-- phpRedisAdmin  
+- phpRedisAdmin 
 
-### 目录结构
-```
-Docker-LNMP
-|----docker                             Docker 目录
-|--------config                         配置文件目录
-|----------ini                          php 配置文件目录
-|------------php.ini                    php 配置文件
-|----------nginx                        Nginx 配置文件目录
-|--------www                            应用根目录
-|----docs                               扩展安装目录
-|----extendDockerCompose                其余docker编排环境
-|----README.md                          说明文件
-|----docker-compose-fast.yml            docker compose 
-```
-
-### 准备docker安装环境
+#### 准备docker安装环境
 
 ```shell
 # 安装 Docker 和 Docker-Compose
@@ -50,7 +66,7 @@ systemctl daemon-reload
 systemctl restart docker 
 ```
 
-### 安装
+#### 安装
 
 ```shell
 # 克隆项目
@@ -61,7 +77,7 @@ cd Docker-LNMP
 docker-compose -f docker-compose-fast.yml up -d
 ```
 
-### 测试
+#### 测试
 
 执行成功  
 
@@ -75,13 +91,12 @@ Creating php ...
 Creating nginx ...
 ```
 
-访问 IP，效果图如下：  
+访问 IP，效果图如下：   
 
-<center class="half">
- <img src="https://github.com/winnerbeast/dockerMicroservicesEnv/blob/main/docs/images/nezha-test.png" />
-</center>  
+![](./Docker-LNMP/docs/images/nezha-test.png)
 
-### 学习文档
+
+#### 学习文档
 
 - [如何新建一个站点](docs/如何新建一个站点.md)
 - [如何安装 PHP 扩展](docs/PHP扩展.md)
@@ -108,5 +123,10 @@ docker rm -f $(docker ps -aq)
 docker rmi $(docker images -q)
 ```
 
+## extendDockerCompose
+
+详情查看`./extendDockerCompose/docs`目录中得说明文档
+
 ### 参考
+
 - [https://github.com/gengxiankun/dockerfiles](https://github.com/gengxiankun/dockerfiles)
